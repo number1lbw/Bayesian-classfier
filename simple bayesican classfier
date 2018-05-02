@@ -1,0 +1,35 @@
+clear;close all;
+mu1 = [2 3];
+sigma1 = [1 0; 0 1];
+r1 = mvnrnd(mu1,sigma1,100);
+plot(r1(:,1),r1(:,2),'r+');
+hold on;
+mu2 = [7 8];
+sigma2 = [ 1 0; 0 1];
+r2 = mvnrnd(mu2,sigma2,100);
+plot(r2(:,1),r2(:,2),'*')
+
+x=10*rand(1,2);%产生随机数据进行测试
+plot(x(1),x(2),'o');
+g1=-(x-mu1)*(x-mu1)'/2+log(0.5);
+g2=-(x-mu2)*(x-mu2)'/2+log(0.5);
+if g1>g2%决策
+    y=1;
+else
+    y=2;
+end
+pause;
+
+X=10*rand(300,2);%产生随机数据进行测试
+distance_1=sqrt((X(:,1)-mu1(1)).^2+(X(:,2)-mu1(2)).^2);%计算距离
+distance_2=sqrt((X(:,1)-mu2(1)).^2+(X(:,2)-mu2(2)).^2);
+distance=[distance_1,distance_2];
+[~,Y]=min(distance');%给出标签
+g1=-sum((X-mu1).^2,2)/2+log(0.5);
+g2=-sum((X-mu2).^2,2)/2+log(0.5);
+G=[g1,g2];%分类决策
+[~,y]=max(G');
+error=length(find(Y-y)~=0);%计算错误率
+wrong_classfy=error/length(X);
+fprintf('error=%f\n',error);
+fprintf('wrong_classfy=%f\n',wrong_classfy);
