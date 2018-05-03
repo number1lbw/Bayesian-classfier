@@ -1,4 +1,4 @@
-clear;close all;
+clear;close all;clc;
 mu1 = [2 3];
 sigma1 = [1 0; 0 1];
 r1 = mvnrnd(mu1,sigma1,100);
@@ -20,16 +20,20 @@ else
 end
 pause;
 
-X=10*rand(300,2);%产生随机数据进行测试
-distance_1=sqrt((X(:,1)-mu1(1)).^2+(X(:,2)-mu1(2)).^2);%计算距离
-distance_2=sqrt((X(:,1)-mu2(1)).^2+(X(:,2)-mu2(2)).^2);
-distance=[distance_1,distance_2];
-[~,Y]=min(distance');%给出标签
-g1=-sum((X-mu1).^2,2)/2+log(0.5);
-g2=-sum((X-mu2).^2,2)/2+log(0.5);
-G=[g1,g2];%分类决策
-[~,y]=max(G');
-error=length(find(Y-y)~=0);%计算错误率
-wrong_classfy=error/length(X);
-fprintf('error=%f\n',error);
-fprintf('wrong_classfy=%f\n',wrong_classfy);
+for i=1:20
+    X=10*rand(300,2);%产生随机数据进行测试
+    distance_1=sqrt((X(:,1)-mu1(1)).^2+(X(:,2)-mu1(2)).^2);%计算距离
+    distance_2=sqrt((X(:,1)-mu2(1)).^2+(X(:,2)-mu2(2)).^2);
+    distance=[distance_1,distance_2];
+    [~,Y]=min(distance');%给出标签
+    g1=-sum((X-mu1).^2,2)/2+log(0.5);
+    g2=-sum((X-mu2).^2,2)/2+log(0.5);
+    G=[g1,g2];%分类决策
+    [~,y]=max(G');
+    error=length(find(Y-y)~=0);%计算错误率
+    wrong_classfy=error/length(X);
+    fprintf('第%d次实验\n',i);
+    fprintf('error=%f\n',error);
+    fprintf('wrong_classfy=%f\n',wrong_classfy);
+    pause;
+end
