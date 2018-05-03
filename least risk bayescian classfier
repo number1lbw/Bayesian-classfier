@@ -1,4 +1,4 @@
-clear;close all;
+clear;close all;clc
 a=[ -3.9847,-3.5549,-1.2401,-0.9780,-0.7932,-2.8531,-2.7605,...
     -3.7287,-3.5414,-2.2692,-3.4549,-3.0752,-3.9934, -0.9780,-1.5799,...
     -1.4885,-0.7431,-0.4221,-1.1186,-2.3462,-1.0826,-3.4196,-1.3193,...
@@ -24,17 +24,26 @@ P_1=0.9;P_2=0.1;
 P1_r=(Pr_1.*P_1)/(Pr_1.*P_1+Pr_2.*P_2);%计算后验概率
 P2_r=(Pr_2.*P_2)/(Pr_1.*P_1+Pr_2.*P_2);
 plot(x,P1_r);hold on;
-plot(x,P2_r);
+plot(x,P2_r);hold off;
+pause;
 
-r=5*randn(1);%生成随机数作为分类样本
-Pr_1=normpdf(r,mu_1,sigma_1);%计算类条件分布概率
-Pr_2=normpdf(r,mu_2,sigma_2);
-P1_r=(Pr_1*P_1)/(Pr_1*P_1+Pr_2*P_2);%计算后验概率
-P2_r=(Pr_2*P_2)/(Pr_1*P_1+Pr_2*P_2);
-R1_r=0+1*P2_r;%计算条件风险
-R2_r=6*P1_r+0;
-if R1_r<R2_r%决策
-    label=1;
-else
-    label=2;
+for i=1:20
+    r=5*randn(1);%生成随机数作为分类样本
+    figure(3);
+    plot(a,0,'o');hold on;
+    plot(b,0,'bx');hold on;
+    plot(r,0,'r+');hold off;
+    pause;
+    Pr_1=normpdf(r,mu_1,sigma_1);%计算类条件分布概率
+    Pr_2=normpdf(r,mu_2,sigma_2);
+    P1_r=(Pr_1*P_1)/(Pr_1*P_1+Pr_2*P_2);%计算后验概率
+    P2_r=(Pr_2*P_2)/(Pr_1*P_1+Pr_2*P_2);
+    R1_r=0+1*P2_r;%计算条件风险
+    R2_r=6*P1_r+0;
+    if R1_r<R2_r%决策
+        label=1;
+    else
+        label=2;
+    end
+    fprintf('第%d次测试点r[%f]属于第%d类\n',i,r,label);
 end
